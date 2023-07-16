@@ -18,11 +18,13 @@ class Idea:
         self.name = name
         self.idea_list = idea_list
         self.attribute_values = {}
-    
+
     def add_attribute(self, name: str, value: Union[str, List, Dict]):
         # TODO: check if idea list has attribute by name
+        if self.idea_list is not None and name not in self.idea_list.attributes:
+            raise AttributeNotFoundError
         self.attribute_values[name] = value
-        
+
     def get_attribute_value(self, attribute_name):
         if attribute_name not in self.attribute_values:
             raise AttributeNotFoundError(attribute_name)
@@ -33,7 +35,7 @@ class Idea:
 
         if self.idea_list is None:
             raise IdeaListNotFoundError
-        
+
         attribute = self.idea_list.attributes.get(attribute_name)
 
         if attribute is None:
@@ -42,8 +44,6 @@ class Idea:
         score = attribute.attribute_type.scoring_function(value)
 
         return score
-    
+
     def __str__(self):
         return self.name
-
-
